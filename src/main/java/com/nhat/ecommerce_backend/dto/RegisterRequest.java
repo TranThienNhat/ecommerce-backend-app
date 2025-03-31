@@ -8,6 +8,15 @@ import lombok.Data;
 public class RegisterRequest {
 
     @NotBlank
+    private String name;
+
+    @NotBlank
+    private String phone;
+
+    @NotBlank
+    private String address;
+
+    @NotBlank
     @Email
     private String email;
 

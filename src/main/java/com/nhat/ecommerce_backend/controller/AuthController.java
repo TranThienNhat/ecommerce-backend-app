@@ -6,6 +6,7 @@ import com.nhat.ecommerce_backend.dto.LogingRequest;
 import com.nhat.ecommerce_backend.dto.RegisterRequest;
 import com.nhat.ecommerce_backend.repository.UserRepository;
 import com.nhat.ecommerce_backend.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -34,7 +35,7 @@ public class AuthController {
     private UserDetailsService userDetailsService;
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
+    public ResponseEntity<?> register(@RequestBody @Valid RegisterRequest request) {
         try {
             userService.registerUser(request);
             return ResponseEntity.ok("Đăng kí thành công !");
@@ -44,7 +45,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LogingRequest request) {
+    public ResponseEntity<?> login(@RequestBody @Valid LogingRequest request) {
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
