@@ -4,27 +4,27 @@ import com.nhat.ecommerce_backend.model.enums.Role;
 import com.nhat.ecommerce_backend.dto.RegisterRequest;
 import com.nhat.ecommerce_backend.entity.User;
 import com.nhat.ecommerce_backend.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     public void registerUser(RegisterRequest request) {
-        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
+        if (userRepository.existsByEmail(request.getEmail())) {
             throw new RuntimeException("Tên email đã tồn tại !");
         }
 
@@ -43,18 +43,13 @@ public class UserService {
     public User getProfile() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        if (authentication == null || !authentication.isAuthenticated()) {
+        if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal() == "anonymousUser") {
             throw new AuthenticationCredentialsNotFoundException("Người dùng chưa xác thực");
         }
 
-        Object principal = authentication.getPrincipal();
+        String email = ((UserDetails) authentication.getPrincipal()).getUsername();
 
-        if (principal instanceof UserDetails userDetails) {
-            String email = userDetails.getUsername();
-            return userRepository.findByEmail(email)
-                    .orElseThrow(() -> new RuntimeException("Không tìm thấy người dùng"));
-        }
-
-        throw new RuntimeException("Không thể xác định người dùng");
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("Không tìm thấy người dùng"));
     }
 }
