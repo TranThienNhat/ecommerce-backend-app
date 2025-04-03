@@ -5,6 +5,7 @@ import com.nhat.ecommerce_backend.dto.AuthResponse;
 import com.nhat.ecommerce_backend.dto.LoginRequest;
 import com.nhat.ecommerce_backend.dto.RegisterRequest;
 import com.nhat.ecommerce_backend.entity.User;
+import com.nhat.ecommerce_backend.service.CartService;
 import com.nhat.ecommerce_backend.service.CustomDetailService;
 import com.nhat.ecommerce_backend.service.UserService;
 import jakarta.validation.Valid;
@@ -29,12 +30,14 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
     private final CustomDetailService customDetailService;
+    private final CartService cartService;
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody @Valid RegisterRequest request) {
         try {
-            userService.registerUser(request);
-            return ResponseEntity.ok("Đăng kí thành công !");
+            var user = userService.registerUser(request);
+            cartService.createCart(user.getId());
+            return ResponseEntity.ok("Register thành công !");
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
