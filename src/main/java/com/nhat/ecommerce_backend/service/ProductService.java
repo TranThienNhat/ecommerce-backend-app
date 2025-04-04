@@ -62,4 +62,9 @@ public class ProductService {
         }
         productRepository.deleteById(id);
     }
+
+    public Product getProductById(Long Id) {
+        return productRepository.findById(Id)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy product !"));
+    }
 }

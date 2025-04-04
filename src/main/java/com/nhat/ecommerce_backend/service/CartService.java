@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -17,7 +18,7 @@ public class CartService {
     private final UserService userService;
 
     public Optional<Cart> getCartForUser(Long userId) {
-        return Optional.ofNullable(cartRepository.findByUserId(userId));
+        return cartRepository.findByUserId(userId);
     }
 
     public void createCart(Long userId) {
@@ -29,5 +30,16 @@ public class CartService {
 
         cartRepository.save(cart);
     }
+
+    public Cart getCartById(UUID cartId) {
+        return cartRepository.findById(cartId)
+                .orElseThrow(()-> new RuntimeException("Không tìm thấy cart !"));
+    }
+
+    public Cart getCartByUserId(Long userId) {
+        return cartRepository.findByUserId(userId)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy giỏ hàng của user"));
+    }
+
 }
 
