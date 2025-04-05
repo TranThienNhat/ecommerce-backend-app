@@ -22,12 +22,16 @@ public class Order {
     @Id
     @UuidGenerator
     public UUID id;
+
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
     private BigDecimal totalPrice;
+
     @Enumerated(EnumType.STRING)
     private Status status;
+
     @Column(updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 }

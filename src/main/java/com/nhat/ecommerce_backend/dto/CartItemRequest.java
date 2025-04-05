@@ -1,9 +1,8 @@
 package com.nhat.ecommerce_backend.dto;
 
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
-
-import java.util.UUID;
 
 @Data
 public class CartItemRequest {
@@ -11,9 +10,9 @@ public class CartItemRequest {
     @NotBlank
     private String cartId;
 
-    @NotBlank
+    @Min(1)
     private Long productId;
 
-    @NotBlank
-    private int quantity;
+    @Min(1)
+    private Integer quantity;
 }

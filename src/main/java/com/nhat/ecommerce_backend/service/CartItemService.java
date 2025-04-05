@@ -61,4 +61,8 @@ public class CartItemService {
         Cart cart = cartService.getCartByUserId(userId);
         return cartItemRepository.findAllByCartId(cart.getId());
     }
+
+    public List<CartItem> findAllById(List<UUID> cartItemList) {
+        return cartItemRepository.findAllById(cartItemList);
+    }
 }

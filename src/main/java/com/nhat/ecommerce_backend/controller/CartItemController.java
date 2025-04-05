@@ -41,8 +41,13 @@ public class CartItemController {
 
     @DeleteMapping
     public ResponseEntity<String> deleteCartItems(@RequestBody @Valid CartItemDeleteRequest request) {
-        cartItemService.deleteCartItems(request.getCartItemsId());
-        return ResponseEntity.ok("Đã xóa thành công " + request.getCartItemsId().size() + " sản phẩm");
+        try {
+            cartItemService.deleteCartItems(request.getCartItemsId());
+            return ResponseEntity.ok("Đã xóa thành công " + request.getCartItemsId().size() + " sản phẩm");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
     }
 
     @GetMapping("/{userId}")

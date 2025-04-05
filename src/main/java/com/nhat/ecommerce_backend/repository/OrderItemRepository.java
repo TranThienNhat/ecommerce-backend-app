@@ -1,13 +1,11 @@
 package com.nhat.ecommerce_backend.repository;
 
-import com.nhat.ecommerce_backend.entity.Order;
+import com.nhat.ecommerce_backend.entity.OrderItem;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface OrderRepository extends JpaRepository<Order, UUID> {
-    List<Order> findAllByUserId(Long userId);
+public interface OrderItemRepository extends JpaRepository<OrderItem, UUID> {
 }
