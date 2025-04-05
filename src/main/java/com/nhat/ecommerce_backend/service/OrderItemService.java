@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -34,5 +35,22 @@ public class OrderItemService {
 
         // Lưu OrderItem vào DB
         orderItemRepository.save(orderItem);
+    }
+
+    public List<OrderItem> getOrderItemsByOrderId(UUID orderId) {
+        return orderItemRepository.findAllByOrderId(orderId);
+    }
+
+    public OrderItem getOrderItemById(UUID id) {
+        return orderItemRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy orderitem "));
+    }
+
+
+    public void deleteOrderItem(UUID id) {
+        OrderItem orderItem = orderItemRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Không tim thấy order item"));
+
+        orderItemRepository.delete(orderItem);
     }
 }
