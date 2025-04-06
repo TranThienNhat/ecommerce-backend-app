@@ -6,8 +6,12 @@ import com.nhat.ecommerce_backend.entity.Product;
 import com.nhat.ecommerce_backend.repository.CategoryRepository;
 import com.nhat.ecommerce_backend.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -66,5 +70,21 @@ public class ProductService {
     public Product getProductById(Long Id) {
         return productRepository.findById(Id)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy product !"));
+    }
+
+    public List<Product> searchProducts(String keyword) {
+        return productRepository.findByNameContainingIgnoreCase(keyword);
+    }
+
+    public Page<Product> filterByConditions(String name, Long categoryId, BigDecimal minPrice, BigDecimal maxPrice, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return productRepository.filterByConditions(name, categoryId, minPrice, maxPrice, pageable);
+    }
+
+
+
+    public Page<Product> findAll(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return productRepository.findAll(pageable);
     }
 }
