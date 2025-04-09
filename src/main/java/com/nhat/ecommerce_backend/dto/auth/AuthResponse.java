@@ -1,4 +1,4 @@
-package com.nhat.ecommerce_backend.dto;
+package com.nhat.ecommerce_backend.dto.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,22 +1,28 @@
-package com.nhat.ecommerce_backend.dto;
+package com.nhat.ecommerce_backend.dto.user.Response;
 
 import com.nhat.ecommerce_backend.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.time.LocalDate;
+
 @Data
 @AllArgsConstructor
 public class UserResponse {
     private String email;
-    private String name;
-    private String phone;
+    private String firstName;
+    private String lastName;
+    private LocalDate birthDate;
+    private String 	phoneNumber;
     private String address;
     private String role;
 
     public UserResponse(User user) {
         this.email = user.getEmail();
-        this.name = user.getName();
-        this.phone = user.getPhone();
+        this.firstName = user.getFirstName();
+        this.lastName = user.getLastName();
+        this.birthDate = user.getBirthDate();
+        this.phoneNumber = user.getPhoneNumber();
         this.address = user.getAddress();
         this.role = user.getRole().name();
     }
