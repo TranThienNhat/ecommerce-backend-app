@@ -1,10 +1,9 @@
 package com.nhat.ecommerce_backend.controller;
 
 import com.nhat.ecommerce_backend.config.JwtUtil;
-import com.nhat.ecommerce_backend.dto.AuthResponse;
-import com.nhat.ecommerce_backend.dto.LoginRequest;
-import com.nhat.ecommerce_backend.dto.RegisterRequest;
-import com.nhat.ecommerce_backend.entity.User;
+import com.nhat.ecommerce_backend.dto.auth.AuthResponse;
+import com.nhat.ecommerce_backend.dto.auth.LoginRequest;
+import com.nhat.ecommerce_backend.dto.user.request.RegisterRequest;
 import com.nhat.ecommerce_backend.service.CartService;
 import com.nhat.ecommerce_backend.service.CustomDetailService;
 import com.nhat.ecommerce_backend.service.UserService;
@@ -15,7 +14,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

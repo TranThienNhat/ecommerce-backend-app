@@ -1,6 +1,6 @@
 package com.nhat.ecommerce_backend.controller;
 
-import com.nhat.ecommerce_backend.dto.UserResponse;
+import com.nhat.ecommerce_backend.dto.user.response.UserResponse;
 import com.nhat.ecommerce_backend.entity.User;
 import com.nhat.ecommerce_backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

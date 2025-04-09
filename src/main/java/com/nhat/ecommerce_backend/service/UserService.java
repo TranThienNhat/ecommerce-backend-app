@@ -1,7 +1,7 @@
 package com.nhat.ecommerce_backend.service;
 
 import com.nhat.ecommerce_backend.model.enums.Role;
-import com.nhat.ecommerce_backend.dto.RegisterRequest;
+import com.nhat.ecommerce_backend.dto.user.request.RegisterRequest;
 import com.nhat.ecommerce_backend.entity.User;
 import com.nhat.ecommerce_backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +14,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
