@@ -15,14 +15,12 @@ import java.util.UUID;
 public class CartService {
 
     private final CartRepository cartRepository;
-    private final UserService userService;
 
     public Optional<Cart> getCartForUser(Long userId) {
         return cartRepository.findByUserId(userId);
     }
 
-    public void createCart(Long userId) {
-        User user = userService.findById(userId);
+    public void createCart(User user) {
 
         Cart cart = new Cart();
         cart.setUser(user);
