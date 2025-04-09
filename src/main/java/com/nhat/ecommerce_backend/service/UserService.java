@@ -6,6 +6,7 @@ import com.nhat.ecommerce_backend.dto.user.request.RegisterRequest;
 import com.nhat.ecommerce_backend.entity.User;
 import com.nhat.ecommerce_backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserService {
 
     private final UserRepository userRepository;
@@ -25,7 +27,10 @@ public class UserService {
     private final CartService cartService;
 
     public void registerUser(RegisterRequest request) {
+        log.info("Registering new user with email: {}", request.getEmail());
+
         if (userRepository.existsByEmail(request.getEmail())) {
+            log.warn("Registration failed. Email already exists: {}", request.getEmail());
             throw new BusinessException("Email already exists !");
         }
 
@@ -41,7 +46,10 @@ public class UserService {
                 .build();
 
         userRepository.save(user);
+        log.info("User saved to database: {}", user.getEmail());
+
         cartService.createCart(user);
+        log.info("Cart created for user: {}", user.getEmail());
     }
 
     public User getProfile() {
