@@ -11,7 +11,6 @@ import org.springframework.security.authentication.AuthenticationCredentialsNotF
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -53,20 +52,30 @@ public class UserService {
     }
 
     public User getProfile() {
+        log.info("Get authenticated user information");
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal() == "anonymousUser") {
-            throw new AuthenticationCredentialsNotFoundException("Người dùng chưa xác thực");
+        if (authentication == null || !authentication.isAuthenticated() || "anonymousUser".equals(authentication.getPrincipal())) {
+            log.warn("Unauthenticated user: {}", authentication != null ? authentication.getPrincipal() : "null");
+            throw new AuthenticationCredentialsNotFoundException("User is not authenticated");
         }
 
         String email = ((UserDetails) authentication.getPrincipal()).getUsername();
+        log.info("Get user email information: {}", email);
 
-        return userRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("Không tìm thấy người dùng"));
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new BusinessException("User not found"));
+
+        return user;
     }
 
     public User findById(Long userId) {
+        log.debug("Finding user with ID: {}", userId);
+
         return userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("Không tìm thấy user"));
+                .orElseThrow(() -> {
+                    log.warn("User not found with ID: {}", userId);
+                    return new BusinessException("User not found");
+                });
     }
 }
