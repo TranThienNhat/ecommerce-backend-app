@@ -1,10 +1,10 @@
-package com.nhat.ecommerce_backend.service;
+package com.nhat.ecommerce_backend.service.user;
 
 import com.nhat.ecommerce_backend.dto.user.request.RegisterRequest;
 import com.nhat.ecommerce_backend.entity.User;
 import com.nhat.ecommerce_backend.exception.BusinessException;
 import com.nhat.ecommerce_backend.repository.UserRepository;
-import com.nhat.ecommerce_backend.service.user.UserServiceImpl;
+import com.nhat.ecommerce_backend.service.CartService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
