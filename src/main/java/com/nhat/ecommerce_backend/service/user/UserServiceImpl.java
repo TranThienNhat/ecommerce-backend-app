@@ -1,10 +1,11 @@
-package com.nhat.ecommerce_backend.service;
+package com.nhat.ecommerce_backend.service.user;
 
 import com.nhat.ecommerce_backend.exception.BusinessException;
 import com.nhat.ecommerce_backend.model.enums.Role;
 import com.nhat.ecommerce_backend.dto.user.request.RegisterRequest;
 import com.nhat.ecommerce_backend.entity.User;
 import com.nhat.ecommerce_backend.repository.UserRepository;
+import com.nhat.ecommerce_backend.service.CartService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
@@ -17,7 +18,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class UserService {
+public class UserServiceImpl implements UserService{
 
     private final UserRepository userRepository;
 

@@ -4,6 +4,7 @@ import com.nhat.ecommerce_backend.dto.user.request.RegisterRequest;
 import com.nhat.ecommerce_backend.entity.User;
 import com.nhat.ecommerce_backend.exception.BusinessException;
 import com.nhat.ecommerce_backend.repository.UserRepository;
+import com.nhat.ecommerce_backend.service.user.UserServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -18,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class UserServiceTest {
+class UserServiceImplTest {
 
     @Mock
     private UserRepository userRepository;
@@ -30,7 +31,7 @@ class UserServiceTest {
     private CartService cartService;
 
     @InjectMocks
-    private UserService userService;
+    private UserServiceImpl userServiceImpl;
 
 
     @Test
@@ -41,7 +42,7 @@ class UserServiceTest {
 
         when(userRepository.existsByEmail("test@gmail.com")).thenReturn(true);
 
-        BusinessException exception = assertThrows(BusinessException.class, () -> userService.registerUser(request));
+        BusinessException exception = assertThrows(BusinessException.class, () -> userServiceImpl.registerUser(request));
 
         assertEquals("Email already exists !", exception.getMessage());
         verify(userRepository, never()).save(any());
@@ -63,7 +64,7 @@ class UserServiceTest {
         when(userRepository.existsByEmail("test@gmail.com")).thenReturn(false);
         when(passwordEncoder.encode("12345678")).thenReturn("encodedPassword");
 
-        userService.registerUser(request);
+        userServiceImpl.registerUser(request);
 
         ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
         verify(userRepository).save(userArgumentCaptor.capture());

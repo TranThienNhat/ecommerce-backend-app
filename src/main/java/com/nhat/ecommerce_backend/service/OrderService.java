@@ -9,6 +9,7 @@ import com.nhat.ecommerce_backend.entity.Product;
 import com.nhat.ecommerce_backend.entity.User;
 import com.nhat.ecommerce_backend.model.enums.Status;
 import com.nhat.ecommerce_backend.repository.OrderRepository;
+import com.nhat.ecommerce_backend.service.user.UserServiceImpl;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -17,14 +18,13 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class OrderService {
 
-    private final UserService userService;
+    private final UserServiceImpl userServiceImpl;
     private final CartItemService cartItemService;
     private final OrderRepository orderRepository;
     private final OrderItemService orderItemService;
@@ -32,7 +32,7 @@ public class OrderService {
 
     @Transactional
     public Order createOrder(@Valid OrdersRequest request) {
-        User user = userService.findById(request.getUserId());
+        User user = userServiceImpl.findById(request.getUserId());
         List<CartItem> cartItems = cartItemService.findAllById(request.getCartItemList());
         if (cartItems.isEmpty()) {
             throw new RuntimeException("Không tìm thấy cart item nào");
@@ -76,7 +76,7 @@ public class OrderService {
     @Transactional
     public Order createPlaceOrder(@Valid PlaceOrderRequest request) {
         // Tìm người dùng theo userId
-        User user = userService.findById(request.getUserId());
+        User user = userServiceImpl.findById(request.getUserId());
 
         // Tìm sản phẩm theo productId
         Product product = productService.getProductById(request.getProductId());

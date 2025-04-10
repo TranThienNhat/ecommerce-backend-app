@@ -4,7 +4,7 @@ import com.nhat.ecommerce_backend.dto.auth.LoginResponse;
 import com.nhat.ecommerce_backend.dto.auth.LoginRequest;
 import com.nhat.ecommerce_backend.dto.user.request.RegisterRequest;
 import com.nhat.ecommerce_backend.service.auth.AuthenticationServiceImpl;
-import com.nhat.ecommerce_backend.service.UserService;
+import com.nhat.ecommerce_backend.service.user.UserServiceImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,12 +18,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final UserService userService;
+    private final UserServiceImpl userServiceImpl;
     private final AuthenticationServiceImpl authenticationserviceimpl;
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody @Valid RegisterRequest request) {
-        userService.registerUser(request);
+        userServiceImpl.registerUser(request);
         return ResponseEntity.ok("Registration successful!");
     }
 
