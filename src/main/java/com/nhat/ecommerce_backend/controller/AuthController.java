@@ -3,8 +3,8 @@ package com.nhat.ecommerce_backend.controller;
 import com.nhat.ecommerce_backend.dto.auth.LoginResponse;
 import com.nhat.ecommerce_backend.dto.auth.LoginRequest;
 import com.nhat.ecommerce_backend.dto.user.request.RegisterRequest;
-import com.nhat.ecommerce_backend.service.auth.AuthenticationServiceImpl;
-import com.nhat.ecommerce_backend.service.user.UserServiceImpl;
+import com.nhat.ecommerce_backend.service.auth.AuthenticationService;
+import com.nhat.ecommerce_backend.service.user.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,18 +18,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final UserServiceImpl userServiceImpl;
-    private final AuthenticationServiceImpl authenticationserviceimpl;
+    private final UserService userService;
+    private final AuthenticationService authenticationservice;
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody @Valid RegisterRequest request) {
-        userServiceImpl.registerUser(request);
+        userService.registerUser(request);
         return ResponseEntity.ok("Registration successful!");
     }
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody @Valid LoginRequest request) {
-        var token = authenticationserviceimpl.login(request);
+        var token = authenticationservice.login(request);
         return ResponseEntity.ok(token);
     }
 }

@@ -2,7 +2,7 @@ package com.nhat.ecommerce_backend.controller;
 
 import com.nhat.ecommerce_backend.dto.user.response.UserResponse;
 import com.nhat.ecommerce_backend.entity.User;
-import com.nhat.ecommerce_backend.service.user.UserServiceImpl;
+import com.nhat.ecommerce_backend.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final UserServiceImpl userServiceImpl;
+    private final UserService userService;
 
     @GetMapping("/user/me")
     public ResponseEntity<UserResponse> getProfile() {
-        User user = userServiceImpl.getProfile();
+        User user = userService.getProfile();
         return ResponseEntity.ok(new UserResponse(user));
     }
 }
