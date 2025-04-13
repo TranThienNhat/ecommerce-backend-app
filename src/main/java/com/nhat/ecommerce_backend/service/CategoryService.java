@@ -2,6 +2,7 @@ package com.nhat.ecommerce_backend.service;
 
 import com.nhat.ecommerce_backend.dto.CategoryRequest;
 import com.nhat.ecommerce_backend.entity.Category;
+import com.nhat.ecommerce_backend.exception.BusinessException;
 import com.nhat.ecommerce_backend.repository.CategoryRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,11 @@ public class CategoryService {
 
     public List<Category> getAllCategory() {
         return categoryRepository.findAll();
+    }
 
+    public Category getById(Long id) {
+        return categoryRepository.findById(id)
+                .orElseThrow(() -> new BusinessException("Category not found"));
     }
 
     public Category createCategory(CategoryRequest request) {

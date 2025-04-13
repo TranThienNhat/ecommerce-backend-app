@@ -6,7 +6,7 @@ import lombok.Data;
 import java.math.BigDecimal;
 
 @Data
-public class ProductRequest {
+public class CreateProductRequest {
 
     @NotBlank(message = "Tên sản phẩm không được để trống!")
     @Size(min = 3, max = 100, message = "Tên sản phẩm phải có độ dài từ 3 đến 100 ký tự!")

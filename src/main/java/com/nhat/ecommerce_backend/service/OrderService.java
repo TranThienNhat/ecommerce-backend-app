@@ -9,6 +9,7 @@ import com.nhat.ecommerce_backend.entity.Product;
 import com.nhat.ecommerce_backend.entity.User;
 import com.nhat.ecommerce_backend.model.enums.Status;
 import com.nhat.ecommerce_backend.repository.OrderRepository;
+import com.nhat.ecommerce_backend.service.product.ProductServiceImpl;
 import com.nhat.ecommerce_backend.service.user.UserServiceImpl;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -28,7 +29,7 @@ public class OrderService {
     private final CartItemService cartItemService;
     private final OrderRepository orderRepository;
     private final OrderItemService orderItemService;
-    private final ProductService productService;
+    private final ProductServiceImpl productServiceImpl;
 
     @Transactional
     public Order createOrder(@Valid OrdersRequest request) {
@@ -79,7 +80,7 @@ public class OrderService {
         User user = userServiceImpl.findById(request.getUserId());
 
         // Tìm sản phẩm theo productId
-        Product product = productService.getProductById(request.getProductId());
+        Product product = productServiceImpl.getProductById(request.getProductId());
 
         // Tính tổng giá trị đơn hàng
         BigDecimal total = product.getPrice().multiply(BigDecimal.valueOf(request.getQuantity()));

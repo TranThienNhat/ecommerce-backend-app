@@ -5,8 +5,7 @@ import com.nhat.ecommerce_backend.entity.Cart;
 import com.nhat.ecommerce_backend.entity.CartItem;
 import com.nhat.ecommerce_backend.entity.Product;
 import com.nhat.ecommerce_backend.repository.CartItemRepository;
-import com.nhat.ecommerce_backend.repository.CartRepository;
-import com.nhat.ecommerce_backend.repository.ProductRepository;
+import com.nhat.ecommerce_backend.service.product.ProductServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,13 +17,13 @@ import java.util.UUID;
 public class CartItemService {
 
     private final CartItemRepository cartItemRepository;
-    private final ProductService productService;
+    private final ProductServiceImpl productServiceImpl;
     private final CartService cartService;
 
     public CartItem mapForCartItem(CartItemRequest request, CartItem existingCartItem) {
         UUID cartItemId = UUID.fromString(request.getCartId());
         Cart cart = cartService.getCartById(cartItemId);
-        Product product = productService.getProductById(request.getProductId());
+        Product product = productServiceImpl.getProductById(request.getProductId());
 
         if (existingCartItem == null) {
             existingCartItem = new CartItem();
