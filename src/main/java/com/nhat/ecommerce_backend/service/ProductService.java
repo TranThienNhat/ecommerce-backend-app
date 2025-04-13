@@ -1,6 +1,6 @@
 package com.nhat.ecommerce_backend.service;
 
-import com.nhat.ecommerce_backend.dto.ProductRequest;
+import com.nhat.ecommerce_backend.dto.product.ProductRequest;
 import com.nhat.ecommerce_backend.entity.Category;
 import com.nhat.ecommerce_backend.entity.Product;
 import com.nhat.ecommerce_backend.repository.CategoryRepository;

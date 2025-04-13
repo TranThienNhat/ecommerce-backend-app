@@ -1,9 +1,7 @@
-package com.nhat.ecommerce_backend.dto;
+package com.nhat.ecommerce_backend.dto.product;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.Size;
+import com.nhat.ecommerce_backend.model.enums.ProductStatus;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 import java.math.BigDecimal;
 
@@ -26,4 +24,19 @@ public class ProductRequest {
 
     @NotNull(message = "ID danh mục không được để trống!")
     private Long categoryId;
+
+    @NotNull(message = "Số lượng không được để trống!")
+    @Min(value = 0, message = "Số lượng không được âm!")
+    private Integer quantity;
+
+    private Boolean isFeatured = false;
+
+    @DecimalMin(value = "0.0", message = "Giảm giá phải lớn hơn hoặc bằng 0")
+    @DecimalMax(value = "100.0", message = "Giảm giá không được vượt quá 100")
+    private BigDecimal discountPercent;
+
+    private String brand;
+
+    private ProductStatus status = ProductStatus.ACTIVE;
 }
+
