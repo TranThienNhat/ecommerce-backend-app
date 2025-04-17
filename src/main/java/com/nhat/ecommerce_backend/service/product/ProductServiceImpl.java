@@ -50,8 +50,8 @@ public class ProductServiceImpl implements ProductService{
     }
 
 
-    public void updateProduct(UpdateProductRequest request) {
-        Product product = productRepository.findById(request.getId())
+    public void updateProduct(Long id,UpdateProductRequest request) {
+        Product product = productRepository.findById(id)
                 .orElseThrow(() -> new BusinessException("Product not found"));
 
         productMapper.updateProductFromDto(request, product);

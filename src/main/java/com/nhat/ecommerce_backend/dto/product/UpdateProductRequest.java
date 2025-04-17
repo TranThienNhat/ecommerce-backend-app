@@ -8,9 +8,6 @@ import java.math.BigDecimal;
 
 @Data
 public class UpdateProductRequest {
-    @NotNull(message = "ID sản phẩm không được để trống!")
-    private Long id;
-
     private String name;
     private BigDecimal price;
     private Integer quantity;

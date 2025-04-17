@@ -40,9 +40,9 @@ public class ProductController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping
-    public ResponseEntity<String> updateProduct(@RequestBody @Valid UpdateProductRequest request) {
-        productService.updateProduct(request);
+    @PutMapping("/{id}")
+    public ResponseEntity<String> updateProduct(@PathVariable Long id, @RequestBody @Valid UpdateProductRequest request) {
+        productService.updateProduct(id,request);
         return ResponseEntity.ok("Product update successful");
     }
 
