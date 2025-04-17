@@ -1,11 +1,8 @@
 package com.nhat.ecommerce_backend.service.product;
 
 import com.nhat.ecommerce_backend.dto.product.CreateProductRequest;
-import com.nhat.ecommerce_backend.dto.product.FilterRequest;
-import com.nhat.ecommerce_backend.dto.product.SearchRequest;
 import com.nhat.ecommerce_backend.dto.product.UpdateProductRequest;
 import com.nhat.ecommerce_backend.entity.Product;
-import org.mapstruct.MappingTarget;
 import org.springframework.data.domain.Page;
 
 import java.math.BigDecimal;
@@ -18,6 +15,6 @@ public interface ProductService {
     void updateProduct(Long id,UpdateProductRequest request);
     void deleteProduct(Long id);
     Product getProductById(Long id);
-    List<Product> searchProducts(SearchRequest request);
-    Page<Product> filterByConditions(FilterRequest request);
+    List<Product> searchProducts(String request);
+    Page<Product> filterByConditions(String name, Long categoryId, BigDecimal minPrice,BigDecimal maxPrice, int page, int size);
 }

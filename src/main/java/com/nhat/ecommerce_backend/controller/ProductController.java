@@ -1,8 +1,6 @@
 package com.nhat.ecommerce_backend.controller;
 
 import com.nhat.ecommerce_backend.dto.product.CreateProductRequest;
-import com.nhat.ecommerce_backend.dto.product.FilterRequest;
-import com.nhat.ecommerce_backend.dto.product.SearchRequest;
 import com.nhat.ecommerce_backend.dto.product.UpdateProductRequest;
 import com.nhat.ecommerce_backend.entity.Product;
 import com.nhat.ecommerce_backend.service.product.ProductService;
@@ -13,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -53,14 +52,22 @@ public class ProductController {
         return ResponseEntity.ok("Product deleted successfully");
     }
 
-    @PostMapping("/search")
-    public ResponseEntity<List<Product>> searchProducts(@RequestBody SearchRequest request) {
-        return ResponseEntity.ok(productService.searchProducts(request));
+    @GetMapping("/search")
+    public ResponseEntity<List<Product>> searchProducts(@RequestParam String keyword) {
+        return ResponseEntity.ok(productService.searchProducts(keyword));
     }
 
-    @PostMapping("/filter")
-    public ResponseEntity<Page<Product>> filterByConditions(@RequestBody FilterRequest request) {
-        Page<Product> page = productService.filterByConditions(request);
-        return ResponseEntity.ok(page);
+    @GetMapping("/filter")
+    public ResponseEntity<Page<Product>> filterByConditions(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) Long categoryId,
+            @RequestParam(required = false) BigDecimal minPrice,
+            @RequestParam(required = false) BigDecimal maxPrice,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size
+    )
+    {
+        Page<Product> pages = productService.filterByConditions(name, categoryId, minPrice, maxPrice, page, size);
+        return ResponseEntity.ok(pages);
     }
 }

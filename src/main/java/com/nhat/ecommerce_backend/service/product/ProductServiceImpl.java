@@ -1,8 +1,6 @@
 package com.nhat.ecommerce_backend.service.product;
 
 import com.nhat.ecommerce_backend.dto.product.CreateProductRequest;
-import com.nhat.ecommerce_backend.dto.product.FilterRequest;
-import com.nhat.ecommerce_backend.dto.product.SearchRequest;
 import com.nhat.ecommerce_backend.dto.product.UpdateProductRequest;
 import com.nhat.ecommerce_backend.entity.Product;
 import com.nhat.ecommerce_backend.exception.BusinessException;
@@ -71,23 +69,14 @@ public class ProductServiceImpl implements ProductService{
                 .orElseThrow(() -> new BusinessException("Product not found"));
     }
 
-    public List<Product> searchProducts(SearchRequest request) {
-        return productRepository.findByNameContainingIgnoreCase(request.getKeywork());
+    public List<Product> searchProducts(String keyword) {
+        return productRepository.findByNameContainingIgnoreCase(keyword);
     }
 
-    public Page<Product> filterByConditions(FilterRequest request) {
-        Pageable pageable = PageRequest.of(
-                request.getPage() != null ? request.getPage() : 0,
-                request.getSize() != null ? request.getSize() : 20
-        );
-
-        return productRepository.filterByConditions(
-                request.getName(),
-                request.getCategoryId(),
-                request.getMinPrice(),
-                request.getMaxPrice(),
-                pageable
-        );
+    @Override
+    public Page<Product> filterByConditions(String name, Long categoryId, BigDecimal minPrice, BigDecimal maxPrice, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return productRepository.filterByConditions(name, categoryId, minPrice, maxPrice, pageable);
     }
 
 }
