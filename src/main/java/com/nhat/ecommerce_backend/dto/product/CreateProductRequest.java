@@ -4,6 +4,7 @@ import com.nhat.ecommerce_backend.model.enums.ProductStatus;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Data
 public class CreateProductRequest {
@@ -23,7 +24,7 @@ public class CreateProductRequest {
     private BigDecimal price;
 
     @NotNull(message = "ID danh mục không được để trống!")
-    private Long categoryId;
+    private List<Long> categoryIds;
 
     @NotNull(message = "Số lượng không được để trống!")
     @Min(value = 0, message = "Số lượng không được âm!")
