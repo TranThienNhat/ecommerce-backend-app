@@ -11,10 +11,8 @@ import com.nhat.ecommerce_backend.service.CategoryService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
+import org.mapstruct.factory.Mappers;
+import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -22,6 +20,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,8 +34,9 @@ class ProductServiceImplTest {
     @Mock
     private CategoryService categoryService;
 
-    @Mock
-    private ProductMapper productMapper;
+    @Spy
+    private ProductMapper productMapper = Mappers.getMapper(ProductMapper.class);
+
 
     @InjectMocks
     private ProductServiceImpl productServiceImpl;
@@ -47,7 +47,7 @@ class ProductServiceImplTest {
         List<Product> mockProducts = List.of(new Product(), new Product());
         Mockito.when(productRepository.findAll()).thenReturn(mockProducts);
 
-        List<Product> results = productRepository.findAll();
+        List<Product> results = productServiceImpl.getAllProduct();
 
         Assertions.assertEquals(2, results.size());
         Mockito.verify(productRepository).findAll();
@@ -70,9 +70,12 @@ class ProductServiceImplTest {
     void getProductById_ShouldThrow_WhenNotFound() {
         Mockito.when(productRepository.findById(1L)).thenReturn(Optional.empty());
 
-        Assertions.assertThrows(BusinessException.class, () -> {
+        BusinessException exception = Assertions.assertThrows(BusinessException.class, () -> {
             productServiceImpl.getProductById(1L);
         });
+        Assertions.assertEquals("Product not found", exception.getMessage());
+
+        Mockito.verify(productRepository).findById(1L);
     }
 
     @Test
@@ -83,17 +86,18 @@ class ProductServiceImplTest {
         request.setDescription("product test");
         request.setImageUrl("url test");
         request.setPrice(BigDecimal.valueOf(500));
-        request.setCategoryId(1L);
+        request.setCategoryIds(List.of(1L, 2L));
         request.setQuantity(10);
         request.setIsFeatured(false);
         request.setDiscountPercent(BigDecimal.valueOf(0));
         request.setBrand("");
         request.setStatus(ProductStatus.ACTIVE);
 
-        Category mockCategory = new Category();
-        mockCategory.setId(1L);
+        List<Long> mockCategoryId = List.of(1L, 2L);
 
-        Mockito.when(categoryService.getById(1L)).thenReturn(mockCategory);
+        List<Category> mockCategory = List.of(new Category(), new Category());
+
+        Mockito.when(categoryService.getAllCategoryById(mockCategoryId)).thenReturn(mockCategory);
 
         productServiceImpl.createProduct(request);
 
@@ -104,7 +108,30 @@ class ProductServiceImplTest {
         Assertions.assertEquals("test", saveProduct.getName());
         Assertions.assertEquals("product test", saveProduct.getDescription());
         Assertions.assertEquals(10, saveProduct.getQuantity());
-        Assertions.assertEquals(mockCategory, saveProduct.getCategory());
+        Assertions.assertEquals(mockCategory, saveProduct.getCategories());
+    }
+
+    @Test
+    void createProduct_ShouldThrowException_WhenNoCategoryFound() {
+        CreateProductRequest request = new CreateProductRequest();
+        request.setName("test");
+        request.setDescription("product test");
+        request.setImageUrl("url test");
+        request.setPrice(BigDecimal.valueOf(500));
+        request.setCategoryIds(List.of(99L, 100L));
+        request.setQuantity(10);
+        request.setIsFeatured(false);
+        request.setDiscountPercent(BigDecimal.valueOf(0));
+        request.setBrand("");
+        request.setStatus(ProductStatus.ACTIVE);
+
+        Mockito.when(categoryService.getAllCategoryById(List.of(99L, 100L))).thenReturn(Collections.emptyList());
+
+        Assertions.assertThrows(BusinessException.class, () -> {
+            productServiceImpl.createProduct(request);
+        }, "No valid category found.");
+
+        Mockito.verify(productRepository, Mockito.never()).save(Mockito.any());
     }
 
     @Test
@@ -124,6 +151,8 @@ class ProductServiceImplTest {
         Mockito.verify(productRepository).findById(id);
         Mockito.verify(productMapper).updateProductFromDto(request, product);
         Mockito.verify(productRepository).save(product);
+
+        Assertions.assertEquals("New name", product.getName());
     }
 
     @Test
@@ -135,7 +164,8 @@ class ProductServiceImplTest {
 
         Assertions.assertThrows(BusinessException.class, () -> {
             productServiceImpl.updateProduct(id, request);
-        });
+        }, "Product not found");
+        Mockito.verify(productRepository, Mockito.never()).save(Mockito.any());
     }
 
     @Test
@@ -157,9 +187,11 @@ class ProductServiceImplTest {
 
         Mockito.when(productRepository.findById(id)).thenReturn(Optional.empty());
 
-        Assertions.assertThrows(BusinessException.class, ()-> {
+        Assertions.assertThrows(BusinessException.class, () -> {
             productServiceImpl.deleteProduct(id);
-        });
+        }, "Product not found");
+
+        Mockito.verify(productRepository, Mockito.never()).save(Mockito.any());
     }
 
     @Test
@@ -175,6 +207,7 @@ class ProductServiceImplTest {
 
         Mockito.verify(productRepository).findByNameContainingIgnoreCase(keyword);
         Assertions.assertEquals(2, results.size());
+        Assertions.assertInstanceOf(Product.class, results.get(0));
     }
 
     @Test
@@ -197,6 +230,7 @@ class ProductServiceImplTest {
         Page<Product> results = productServiceImpl.filterByConditions(name, categoryId, minPrice, maxPrice, page, size);
 
         Assertions.assertEquals(2, results.getTotalElements());
+        Assertions.assertEquals(1, results.getTotalPages());
         Mockito.verify(productRepository).filterByConditions(name, categoryId, minPrice, maxPrice, pageable);
     }
 }
