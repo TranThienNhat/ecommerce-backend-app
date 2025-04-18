@@ -1,4 +1,4 @@
-package com.nhat.ecommerce_backend.dto;
+package com.nhat.ecommerce_backend.dto.category;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;

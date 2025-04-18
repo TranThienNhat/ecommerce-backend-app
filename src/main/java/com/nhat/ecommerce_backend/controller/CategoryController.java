@@ -1,6 +1,6 @@
 package com.nhat.ecommerce_backend.controller;
 
-import com.nhat.ecommerce_backend.dto.CategoryRequest;
+import com.nhat.ecommerce_backend.dto.category.CategoryRequest;
 import com.nhat.ecommerce_backend.entity.Category;
 import com.nhat.ecommerce_backend.service.CategoryService;
 import jakarta.validation.Valid;
