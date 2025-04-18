@@ -2,12 +2,12 @@ package com.nhat.ecommerce_backend.service;
 
 import com.nhat.ecommerce_backend.dto.category.CategoryRequest;
 import com.nhat.ecommerce_backend.entity.Category;
+import com.nhat.ecommerce_backend.exception.BusinessException;
 import com.nhat.ecommerce_backend.repository.CategoryRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -20,29 +20,28 @@ public class CategoryService {
         return categoryRepository.findAll();
     }
 
-    public Category createCategory(CategoryRequest request) {
+    public void createCategory(CategoryRequest request) {
         if (categoryRepository.findByName(request.getName()) != null) {
-            throw new RuntimeException("Category đã tồn tại !");
+            throw new BusinessException("category already exists");
         }
 
         Category category = new Category();
         category.setName(request.getName());
-        category.setCreateAt(LocalDateTime.now());
-        return categoryRepository.save(category);
+        categoryRepository.save(category);
     }
 
-    public Category updateCategory(Long id, CategoryRequest request) {
+    public void updateCategory(Long id, CategoryRequest request) {
         var category = categoryRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Không tìm thấy category !"));
+                .orElseThrow(() -> new BusinessException("Category not found"));
 
         category.setName(request.getName());
-        return categoryRepository.save(category);
+        categoryRepository.save(category);
     }
 
     @Transactional
     public void deleteCategory(Long id) {
         Category category = categoryRepository.findById(id)
-                        .orElseThrow(() -> new RuntimeException("Không tìm thấy category để xóa !"));
+                        .orElseThrow(() -> new BusinessException("Category not found"));
 
         categoryRepository.delete(category);
     }
