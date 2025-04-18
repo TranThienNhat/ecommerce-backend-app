@@ -20,10 +20,14 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private LocalDateTime createAt;
+    private LocalDateTime createdAt;
 
     @ManyToMany(mappedBy = "categories")
     @JsonBackReference
     private List<Product> products = new ArrayList<>();
 
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now();
+    }
 }
