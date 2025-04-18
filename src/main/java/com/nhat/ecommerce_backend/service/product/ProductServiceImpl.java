@@ -2,6 +2,7 @@ package com.nhat.ecommerce_backend.service.product;
 
 import com.nhat.ecommerce_backend.dto.product.CreateProductRequest;
 import com.nhat.ecommerce_backend.dto.product.UpdateProductRequest;
+import com.nhat.ecommerce_backend.entity.Category;
 import com.nhat.ecommerce_backend.entity.Product;
 import com.nhat.ecommerce_backend.exception.BusinessException;
 import com.nhat.ecommerce_backend.repository.ProductRepository;
@@ -36,6 +37,15 @@ public class ProductServiceImpl implements ProductService{
 
     public void createProduct(CreateProductRequest request) {
         log.info("Creating new product with name = {}", request.getName());
+
+        List<Long> categoryIds = request.getCategoryIds();
+
+        List<Category> categories = categoryService.getAllCategoryById(categoryIds);
+
+        if (categories.isEmpty()) {
+            throw new BusinessException("No valid category found.");
+        }
+
         Product product = Product.builder()
                 .name(request.getName())
                 .description(request.getDescription())
@@ -45,7 +55,7 @@ public class ProductServiceImpl implements ProductService{
                 .discountPercent(request.getDiscountPercent())
                 .isFeatured(request.getIsFeatured())
                 .brand(request.getBrand())
-                .category(categoryService.getById(request.getCategoryId()))
+                .categories(categories)
                 .build();
 
         productRepository.save(product);
