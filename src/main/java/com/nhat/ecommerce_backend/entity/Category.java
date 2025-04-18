@@ -22,7 +22,8 @@ public class Category {
     private String name;
     private LocalDateTime createAt;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ManyToMany(mappedBy = "categories")
     @JsonBackReference
     private List<Product> products = new ArrayList<>();
+
 }
