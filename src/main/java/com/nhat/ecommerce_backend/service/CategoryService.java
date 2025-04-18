@@ -22,11 +22,6 @@ public class CategoryService {
         return categoryRepository.findAll();
     }
 
-    public Category getById(Long id) {
-        return categoryRepository.findById(id)
-                .orElseThrow(() -> new BusinessException("Category not found"));
-    }
-
     public Category createCategory(CategoryRequest request) {
         if (categoryRepository.findByName(request.getName()) != null) {
             throw new RuntimeException("Category đã tồn tại !");
@@ -52,5 +47,9 @@ public class CategoryService {
                         .orElseThrow(() -> new RuntimeException("Không tìm thấy category để xóa !"));
 
         categoryRepository.delete(category);
+    }
+
+    public List<Category> getAllCategoryById(List<Long> categoryIds) {
+        return categoryRepository.findAllById(categoryIds);
     }
 }
