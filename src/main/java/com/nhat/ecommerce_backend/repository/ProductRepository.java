@@ -13,20 +13,15 @@ import java.util.List;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
-    List<Product> findByCategoryId(Long categoryId);
+    List<Product> findByCategories_Id(Long categoryId);
 
     List<Product> findByNameContainingIgnoreCase(String keyword);
 
-    @Query("SELECT p FROM Product p WHERE " +
-            "(:name IS NULL OR LOWER(p.name) LIKE LOWER(CONCAT('%', :name, '%'))) AND " +
-            "(:minPrice IS NULL OR p.price >= :minPrice) AND " +
-            "(:maxPrice IS NULL OR p.price <= :maxPrice) AND " +
-            "(:categoryId IS NULL OR p.category.id = :categoryId)")
-    Page<Product> filterByConditions(
-            @Param("name") String name,
-            @Param("categoryId") Long categoryId,
-            @Param("minPrice") BigDecimal minPrice,
-            @Param("maxPrice") BigDecimal maxPrice,
-            Pageable pageable
-    );
+    @Query("SELECT p FROM Product p " +
+            "WHERE (:name IS NULL OR LOWER(p.name) LIKE LOWER(CONCAT('%', :name, '%'))) " +
+            "AND (:minPrice IS NULL OR p.price >= :minPrice) " +
+            "AND (:maxPrice IS NULL OR p.price <= :maxPrice) " +
+            "AND (:categoryId IS NULL OR EXISTS (" +
+            " SELECT c FROM p.categories c WHERE c.id = :categoryId))")
+    Page<Product> filterByConditions(String name, Long categoryId, BigDecimal minPrice, BigDecimal maxPrice, Pageable pageable);
 }

@@ -57,12 +57,12 @@ class ProductServiceImplTest {
         Long categoryId = 1L;
         List<Product> mockProducts = List.of(new Product(), new Product());
 
-        Mockito.when(productRepository.findByCategoryId(categoryId)).thenReturn(mockProducts);
+        Mockito.when(productRepository.findByCategories_Id(categoryId)).thenReturn(mockProducts);
 
         List<Product> results = productServiceImpl.getAllProductByCategory(categoryId);
 
         Assertions.assertEquals(2, results.size());
-        Mockito.verify(productRepository).findByCategoryId(categoryId);
+        Mockito.verify(productRepository).findByCategories_Id(categoryId);
     }
 
     @Test

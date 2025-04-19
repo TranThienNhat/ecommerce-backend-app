@@ -32,7 +32,7 @@ public class ProductServiceImpl implements ProductService{
 
     public List<Product> getAllProductByCategory(Long id) {
         log.info("Fetching products by categoryId = {}", id);
-        return productRepository.findByCategoryId(id);
+        return productRepository.findByCategories_Id(id);
     }
 
     public void createProduct(CreateProductRequest request) {
