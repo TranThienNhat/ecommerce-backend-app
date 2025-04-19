@@ -89,7 +89,7 @@ public class ProductServiceImpl implements ProductService{
     }
 
     public List<Product> searchProducts(String keyword) {
-        List<Product> results = productRepository.findByNameContainingIgnoreCase(keyword);
+        List<Product> results = productRepository.searchByName(keyword);
         log.info("Searching for products with keyword: {}, found {} results", keyword, results.size());
         return results;
     }

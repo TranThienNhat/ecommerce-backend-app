@@ -200,11 +200,11 @@ class ProductServiceImplTest {
 
         List<Product> mockProducts = List.of(new Product(), new Product());
 
-        Mockito.when(productRepository.findByNameContainingIgnoreCase(keyword)).thenReturn(mockProducts);
+        Mockito.when(productRepository.searchByName(keyword)).thenReturn(mockProducts);
 
         List<Product> results= productServiceImpl.searchProducts(keyword);
 
-        Mockito.verify(productRepository).findByNameContainingIgnoreCase(keyword);
+        Mockito.verify(productRepository).searchByName(keyword);
         Assertions.assertEquals(2, results.size());
         Assertions.assertInstanceOf(Product.class, results.get(0));
     }
