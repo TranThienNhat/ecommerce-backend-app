@@ -6,7 +6,7 @@ import com.nhat.ecommerce_backend.entity.Category;
 import com.nhat.ecommerce_backend.entity.Product;
 import com.nhat.ecommerce_backend.exception.BusinessException;
 import com.nhat.ecommerce_backend.repository.ProductRepository;
-import com.nhat.ecommerce_backend.service.CategoryService;
+import com.nhat.ecommerce_backend.service.category.CategoryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;

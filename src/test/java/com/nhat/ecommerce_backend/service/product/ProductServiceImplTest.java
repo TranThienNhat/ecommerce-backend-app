@@ -7,7 +7,7 @@ import com.nhat.ecommerce_backend.entity.Product;
 import com.nhat.ecommerce_backend.exception.BusinessException;
 import com.nhat.ecommerce_backend.model.enums.ProductStatus;
 import com.nhat.ecommerce_backend.repository.ProductRepository;
-import com.nhat.ecommerce_backend.service.CategoryService;
+import com.nhat.ecommerce_backend.service.category.CategoryService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,7 +24,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(MockitoExtension.class)
 class ProductServiceImplTest {
 

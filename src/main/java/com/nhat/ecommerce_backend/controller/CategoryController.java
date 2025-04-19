@@ -2,10 +2,9 @@ package com.nhat.ecommerce_backend.controller;
 
 import com.nhat.ecommerce_backend.dto.category.CategoryRequest;
 import com.nhat.ecommerce_backend.entity.Category;
-import com.nhat.ecommerce_backend.service.CategoryService;
+import com.nhat.ecommerce_backend.service.category.CategoryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
