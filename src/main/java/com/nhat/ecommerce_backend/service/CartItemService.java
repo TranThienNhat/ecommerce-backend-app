@@ -56,12 +56,11 @@ public class CartItemService {
         cartItemRepository.deleteAll(cartItems);
     }
 
-    public List<CartItem> getCartItemsByUserId(Long userId) {
-        Cart cart = cartService.getCartByUserId(userId);
-        return cartItemRepository.findAllByCartId(cart.getId());
-    }
-
     public List<CartItem> findAllById(List<UUID> cartItemList) {
         return cartItemRepository.findAllById(cartItemList);
+    }
+
+    public List<CartItem> getCartItemByCart(UUID cartId) {
+        return cartItemRepository.findAllByCartId(cartId);
     }
 }
