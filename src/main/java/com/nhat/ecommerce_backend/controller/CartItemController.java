@@ -49,10 +49,4 @@ public class CartItemController {
         }
 
     }
-
-    @GetMapping("/{userId}")
-    public ResponseEntity<List<CartItem>> getCartItemsByUserId(@PathVariable Long userId) {
-        List<CartItem> cartItemList = cartItemService.getCartItemsByUserId(userId);
-        return ResponseEntity.ok(cartItemList);
-    }
 }
