@@ -9,6 +9,7 @@ import com.nhat.ecommerce_backend.entity.Product;
 import com.nhat.ecommerce_backend.entity.User;
 import com.nhat.ecommerce_backend.model.enums.Status;
 import com.nhat.ecommerce_backend.repository.OrderRepository;
+import com.nhat.ecommerce_backend.service.cartitem.CartItemServiceImpl;
 import com.nhat.ecommerce_backend.service.product.ProductServiceImpl;
 import com.nhat.ecommerce_backend.service.user.UserServiceImpl;
 import jakarta.transaction.Transactional;
@@ -26,7 +27,7 @@ import java.util.UUID;
 public class OrderService {
 
     private final UserServiceImpl userServiceImpl;
-    private final CartItemService cartItemService;
+    private final CartItemServiceImpl cartItemService;
     private final OrderRepository orderRepository;
     private final OrderItemService orderItemService;
     private final ProductServiceImpl productServiceImpl;
