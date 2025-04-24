@@ -1,9 +1,9 @@
 package com.nhat.ecommerce_backend.controller;
 
-import com.nhat.ecommerce_backend.dto.CartItemDeleteRequest;
-import com.nhat.ecommerce_backend.dto.CartItemRequest;
-import com.nhat.ecommerce_backend.entity.CartItem;
-import com.nhat.ecommerce_backend.service.CartItemService;
+import com.nhat.ecommerce_backend.dto.cartItem.DeleteCartItemRequest;
+import com.nhat.ecommerce_backend.dto.cartItem.CartItemRequest;
+import com.nhat.ecommerce_backend.dto.cartItem.CartItemResponse;
+import com.nhat.ecommerce_backend.service.cartitem.CartItemService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,34 +19,27 @@ public class CartItemController {
 
     private final CartItemService cartItemService;
 
+    @GetMapping
+    public ResponseEntity<List<CartItemResponse>> getCartItems() {
+        List<CartItemResponse> responses = cartItemService.getCartItems();
+        return ResponseEntity.ok(responses);
+    }
+
     @PostMapping
-    public ResponseEntity<?> createCartItem(@RequestBody @Valid CartItemRequest request) {
-        try {
-            CartItem cartItem = cartItemService.createCartItem(request);
-            return ResponseEntity.ok(cartItem);
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    public ResponseEntity<String> createCartItem(@RequestBody @Valid CartItemRequest request) {
+        cartItemService.createCartItem(request);
+        return ResponseEntity.ok("Create cartItem successfully");
     }
 
     @PutMapping("/{cartItemId}")
-    public ResponseEntity<?> updateCartItem(@RequestBody @Valid CartItemRequest request, @PathVariable UUID cartItemId) {
-        try {
-            CartItem cartItem = cartItemService.updatecartItem(cartItemId, request);
-            return ResponseEntity.ok(cartItem);
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    public ResponseEntity<String> updateCartItem(@RequestBody @Valid CartItemRequest request, @PathVariable UUID cartItemId) {
+        cartItemService.updateCartItem(cartItemId, request);
+        return ResponseEntity.ok("CartItem update successful");
     }
 
     @DeleteMapping
-    public ResponseEntity<String> deleteCartItems(@RequestBody @Valid CartItemDeleteRequest request) {
-        try {
-            cartItemService.deleteCartItems(request.getCartItemsId());
-            return ResponseEntity.ok("Đã xóa thành công " + request.getCartItemsId().size() + " sản phẩm");
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-
+    public ResponseEntity<String> deleteCartItems(@RequestBody @Valid DeleteCartItemRequest request) {
+        cartItemService.deleteCartItems(request.getCartItemsId());
+        return ResponseEntity.ok("Deleted successfully" + request.getCartItemsId().size() + " product");
     }
 }
