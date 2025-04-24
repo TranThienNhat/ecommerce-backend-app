@@ -8,4 +8,5 @@ import java.util.UUID;
 public interface CartService {
     void createCart(User user);
     Cart getCartById(UUID cartId);
+    Cart getCartByUserId(Long userId);
 }

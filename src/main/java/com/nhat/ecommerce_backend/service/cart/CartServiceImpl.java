@@ -34,5 +34,13 @@ public class CartServiceImpl implements CartService{
                     return new BusinessException("Cart not found");
                 });
     }
+
+    public Cart getCartByUserId(Long userId) {
+        return cartRepository.findByUserId(userId)
+                .orElseThrow(() -> {
+                    log.warn("Cart not found for userId: {}", userId);
+                    return new BusinessException("Cart not found for userId");
+                });
+    }
 }
 
