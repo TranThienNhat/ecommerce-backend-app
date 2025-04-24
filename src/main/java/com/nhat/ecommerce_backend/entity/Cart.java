@@ -29,6 +29,10 @@ public class Cart {
     @JsonBackReference
     private List<CartItem> cartItems;
 
-    @Column(updatable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime createdAt;
+
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now();
+    }
 }
