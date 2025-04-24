@@ -1,4 +1,4 @@
-package com.nhat.ecommerce_backend.dto.cart;
+package com.nhat.ecommerce_backend.dto.cartItem;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
