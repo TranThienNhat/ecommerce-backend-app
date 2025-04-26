@@ -1,10 +1,9 @@
 package com.nhat.ecommerce_backend.controller;
 
-import com.nhat.ecommerce_backend.dto.OrdersRequest;
-import com.nhat.ecommerce_backend.dto.PlaceOrderRequest;
-import com.nhat.ecommerce_backend.dto.UpdateOrderRequest;
+import com.nhat.ecommerce_backend.dto.order.OrdersRequest;
+import com.nhat.ecommerce_backend.dto.order.UpdateOrderRequest;
 import com.nhat.ecommerce_backend.entity.Order;
-import com.nhat.ecommerce_backend.service.OrderService;
+import com.nhat.ecommerce_backend.service.order.OrderService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,20 +19,9 @@ public class OrdersController {
 
     private final OrderService orderService;
 
-    @PostMapping
-    public ResponseEntity<?> createOrders(@RequestBody @Valid OrdersRequest request) {
-        try {
-            Order order = orderService.createOrder(request);
-            return ResponseEntity.ok(order);
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-
-    }
-
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<Order>> getAllOrderByUserId(@PathVariable Long userId) {
-        return ResponseEntity.ok(orderService.getAllOrderByUserId(userId));
+        return ResponseEntity.ok(orderService.getAllOrderByUserId());
     }
 
     @GetMapping("/{orderId}")
@@ -41,24 +29,16 @@ public class OrdersController {
         return ResponseEntity.ok(orderService.getOrderById(orderId));
     }
 
-    @PutMapping("/{orderId}/status")
-    public ResponseEntity<?> updateOrder(@PathVariable UUID orderId, @RequestBody @Valid UpdateOrderRequest request) {
-        try {
-            return ResponseEntity.ok(orderService.updateOrder(orderId, request));
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-
+    @PostMapping
+    public ResponseEntity<String> createOrders(@RequestBody @Valid OrdersRequest request) {
+        orderService.createOrder(request);
+        return ResponseEntity.ok("Order created successfully");
     }
 
-    @PostMapping("/place-order")
-    public ResponseEntity<?> placeOrder(@RequestBody @Valid PlaceOrderRequest request) {
-        try {
-            Order order = orderService.createPlaceOrder(request);
-            return ResponseEntity.ok(order);
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
 
+    @PutMapping("/{orderId}/status")
+    public ResponseEntity<String> updateOrder(@PathVariable UUID orderId, @RequestBody @Valid UpdateOrderRequest request) {
+        orderService.updateOrder(orderId, request);
+        return ResponseEntity.ok(request.getStatus() + " update successful");
     }
 }
