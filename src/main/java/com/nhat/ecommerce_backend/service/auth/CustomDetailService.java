@@ -1,8 +1,7 @@
-package com.nhat.ecommerce_backend.service;
+package com.nhat.ecommerce_backend.service.auth;
 
 import com.nhat.ecommerce_backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
