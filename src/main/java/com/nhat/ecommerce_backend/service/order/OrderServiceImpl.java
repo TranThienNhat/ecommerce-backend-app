@@ -13,6 +13,7 @@ import com.nhat.ecommerce_backend.service.orderitem.OrderItemService;
 import com.nhat.ecommerce_backend.service.user.UserService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -21,6 +22,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class OrderServiceImpl implements OrderService{
 
     private final UserService userService;
@@ -30,10 +32,14 @@ public class OrderServiceImpl implements OrderService{
 
     @Transactional
     public void createOrder(OrdersRequest request) {
+
+        log.info("Creating order for user with cart items: {}", request.getCartItemList());
+
         User user = userService.getProfile();
         List<CartItem> cartItems = cartItemService.getAllCartById(request.getCartItemList());
 
         if (cartItems.isEmpty()) {
+            log.warn("No cart items found for user: {}", user.getId());
             throw new BusinessException("No cart items found");
         }
 
@@ -48,13 +54,16 @@ public class OrderServiceImpl implements OrderService{
                 .build();
 
         var savedOrder = orderRepository.save(order);
+        log.info("Order created successfully: {}", savedOrder.getId());
 
         orderItemService.createOrderItem(savedOrder,cartItems);
+
         cartItemService.deleteCartItems(request.getCartItemList());
     }
 
     public List<Order> getAllOrderByUserId() {
         User user = userService.getProfile();
+        log.info("Fetching all orders for user: {}", user.getId());
         return orderRepository.findAllByUserId(user.getId());
     }
 
@@ -64,10 +73,17 @@ public class OrderServiceImpl implements OrderService{
     }
 
     public void updateOrder(UUID orderId, UpdateOrderRequest request) {
+        log.info("Updating order {} to status {}", orderId, request.getStatus());
+
         Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new BusinessException("Order not found"));
+                .orElseThrow(() -> {
+                    log.error("Order not found with id: {}", orderId);
+                    return new BusinessException("Order not found");
+                });
 
         order.setStatus(request.getStatus());
         orderRepository.save(order);
+
+        log.info("Order {} updated successfully", orderId);
     }
 }
