@@ -2,14 +2,14 @@ package com.nhat.ecommerce_backend.service.order;
 
 import com.nhat.ecommerce_backend.dto.order.OrdersRequest;
 import com.nhat.ecommerce_backend.dto.order.UpdateOrderRequest;
-import com.nhat.ecommerce_backend.entity.CartItem;
-import com.nhat.ecommerce_backend.entity.Order;
-import com.nhat.ecommerce_backend.entity.User;
+import com.nhat.ecommerce_backend.dto.product.UpdateProductRequest;
+import com.nhat.ecommerce_backend.entity.*;
 import com.nhat.ecommerce_backend.exception.BusinessException;
 import com.nhat.ecommerce_backend.model.enums.Status;
 import com.nhat.ecommerce_backend.repository.OrderRepository;
 import com.nhat.ecommerce_backend.service.cartitem.CartItemService;
 import com.nhat.ecommerce_backend.service.orderitem.OrderItemService;
+import com.nhat.ecommerce_backend.service.product.ProductService;
 import com.nhat.ecommerce_backend.service.user.UserService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +30,7 @@ public class OrderServiceImpl implements OrderService{
     private final CartItemService cartItemService;
     private final OrderRepository orderRepository;
     private final OrderItemService orderItemService;
+    private final ProductService productService;
 
     @Transactional
     public void createOrder(OrdersRequest request) {
@@ -72,6 +74,7 @@ public class OrderServiceImpl implements OrderService{
                 .orElseThrow(() -> new BusinessException("Order not found"));
     }
 
+    @Transactional
     public void updateOrder(UUID orderId, UpdateOrderRequest request) {
         log.info("Updating order {} to status {}", orderId, request.getStatus());
 
@@ -80,6 +83,22 @@ public class OrderServiceImpl implements OrderService{
                     log.error("Order not found with id: {}", orderId);
                     return new BusinessException("Order not found");
                 });
+
+        if (Status.CANCELLED.equals(request.getStatus())) {
+            log.info("Restocking products for cancelled order {}", orderId);
+
+            List<OrderItem> orderItems = orderItemService.getAllByOrderId(orderId);
+
+            orderItems.forEach(orderItem -> {
+                Product product = productService.getProductById(orderItem.getProduct().getId());
+                int newQuantity = product.getQuantity() + orderItem.getQuantity();
+
+                UpdateProductRequest productRequest = new UpdateProductRequest();
+                productRequest.setQuantity(newQuantity);
+
+                productService.updateProduct(product.getId(), productRequest);
+            });
+        }
 
         order.setStatus(request.getStatus());
         orderRepository.save(order);
