@@ -1,4 +1,4 @@
-package com.nhat.ecommerce_backend.dto;
+package com.nhat.ecommerce_backend.dto.order;
 
 import com.nhat.ecommerce_backend.model.enums.Status;
 import lombok.Data;

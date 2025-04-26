@@ -1,4 +1,4 @@
-package com.nhat.ecommerce_backend.dto;
+package com.nhat.ecommerce_backend.dto.order;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -9,9 +9,6 @@ import java.util.UUID;
 
 @Data
 public class OrdersRequest {
-
-    @NotNull
-    private Long userId;
 
     @NotEmpty
     private List<UUID> cartItemList;
