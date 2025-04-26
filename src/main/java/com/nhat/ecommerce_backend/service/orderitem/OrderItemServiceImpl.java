@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -33,5 +34,10 @@ public class OrderItemServiceImpl implements OrderItemService{
         orderItemRepository.saveAll(orderItems);
 
         log.info("Successfully created {} order items for order id: {}", orderItems.size(), savedOrder.getId());
+    }
+
+    @Override
+    public List<OrderItem> getAllByOrderId(UUID orderId) {
+        return orderItemRepository.findAllByOrderId(orderId);
     }
 }
