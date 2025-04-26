@@ -1,4 +1,4 @@
-package com.nhat.ecommerce_backend.dto.user.response;
+package com.nhat.ecommerce_backend.dto.user;
 
 import com.nhat.ecommerce_backend.entity.User;
 import lombok.AllArgsConstructor;

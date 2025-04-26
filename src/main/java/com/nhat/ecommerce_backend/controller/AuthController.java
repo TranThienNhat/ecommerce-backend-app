@@ -2,7 +2,7 @@ package com.nhat.ecommerce_backend.controller;
 
 import com.nhat.ecommerce_backend.dto.auth.LoginResponse;
 import com.nhat.ecommerce_backend.dto.auth.LoginRequest;
-import com.nhat.ecommerce_backend.dto.user.request.RegisterRequest;
+import com.nhat.ecommerce_backend.dto.user.RegisterRequest;
 import com.nhat.ecommerce_backend.service.auth.AuthenticationService;
 import com.nhat.ecommerce_backend.service.user.UserService;
 import jakarta.validation.Valid;

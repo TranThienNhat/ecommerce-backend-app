@@ -1,6 +1,6 @@
 package com.nhat.ecommerce_backend.controller;
 
-import com.nhat.ecommerce_backend.dto.user.response.UserResponse;
+import com.nhat.ecommerce_backend.dto.user.UserResponse;
 import com.nhat.ecommerce_backend.entity.User;
 import com.nhat.ecommerce_backend.service.user.UserService;
 import lombok.RequiredArgsConstructor;

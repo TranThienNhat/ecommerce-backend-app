@@ -2,7 +2,7 @@ package com.nhat.ecommerce_backend.service.user;
 
 import com.nhat.ecommerce_backend.exception.BusinessException;
 import com.nhat.ecommerce_backend.model.enums.Role;
-import com.nhat.ecommerce_backend.dto.user.request.RegisterRequest;
+import com.nhat.ecommerce_backend.dto.user.RegisterRequest;
 import com.nhat.ecommerce_backend.entity.User;
 import com.nhat.ecommerce_backend.repository.UserRepository;
 import com.nhat.ecommerce_backend.service.cart.CartService;
