@@ -67,7 +67,7 @@ public class CartItemServiceImpl implements CartItemService{
         cartItemRepository.deleteAll(cartItems);
     }
 
-    public List<CartItem> findAllById(List<UUID> cartItemList) {
+    public List<CartItem> getAllCartById(List<UUID> cartItemList) {
         return cartItemRepository.findAllById(cartItemList);
     }
 

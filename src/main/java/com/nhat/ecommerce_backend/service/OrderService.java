@@ -35,7 +35,7 @@ public class OrderService {
     @Transactional
     public Order createOrder(@Valid OrdersRequest request) {
         User user = userServiceImpl.findById(request.getUserId());
-        List<CartItem> cartItems = cartItemService.findAllById(request.getCartItemList());
+        List<CartItem> cartItems = cartItemService.getAllCartById(request.getCartItemList());
         if (cartItems.isEmpty()) {
             throw new RuntimeException("Không tìm thấy cart item nào");
         }

@@ -11,6 +11,6 @@ public interface CartItemService {
     void createCartItem(CartItemRequest request);
     void updateCartItem(UUID cartItemId, CartItemRequest request);
     void deleteCartItems(List<UUID> cartItemsId);
-    List<CartItem> findAllById(List<UUID> cartItemList);
+    List<CartItem> getAllCartById(List<UUID> cartItemList);
     List<CartItemResponse> getCartItems();
 }
