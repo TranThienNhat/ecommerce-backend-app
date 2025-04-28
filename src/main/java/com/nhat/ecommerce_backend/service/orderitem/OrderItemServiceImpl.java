@@ -1,7 +1,9 @@
 package com.nhat.ecommerce_backend.service.orderitem;
 
+import com.nhat.ecommerce_backend.dto.product.UpdateProductRequest;
 import com.nhat.ecommerce_backend.entity.*;
 import com.nhat.ecommerce_backend.repository.OrderItemRepository;
+import com.nhat.ecommerce_backend.service.product.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,7 @@ import java.util.UUID;
 public class OrderItemServiceImpl implements OrderItemService{
 
     private final OrderItemRepository orderItemRepository;
+    private final ProductService productService;
 
     public void createOrderItem(Order savedOrder, List<CartItem> cartItems) {
         log.info("Creating order items for order id: {}", savedOrder.getId());
@@ -27,6 +30,15 @@ public class OrderItemServiceImpl implements OrderItemService{
                     orderItem.setProduct(ci.getProduct());
                     orderItem.setUnitPrice(ci.getProduct().getPrice());
                     orderItem.setQuantity(ci.getQuantity());
+
+                    Product product = productService.getProductById(ci.getProduct().getId());
+                    int newQuantity = product.getQuantity() - ci.getQuantity();
+                    UpdateProductRequest productRequest = new UpdateProductRequest();
+                    productRequest.setQuantity(newQuantity);
+
+                    productService.updateProduct(product.getId(), productRequest);
+                    log.info("Updating product id: {} quantity from {} to {}", product.getId(), product.getQuantity(), newQuantity);
+
                     return orderItem;
                 })
                 .toList();
