@@ -79,4 +79,9 @@ public class UserServiceImpl implements UserService{
                     return new BusinessException("User not found");
                 });
     }
+
+    public User getByEmail(String username) {
+        return userRepository.findByEmail(username)
+                .orElseThrow(() -> new BusinessException("User not found with email: " + username));
+    }
 }
