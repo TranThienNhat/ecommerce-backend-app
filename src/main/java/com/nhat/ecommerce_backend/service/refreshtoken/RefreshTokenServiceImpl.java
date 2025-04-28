@@ -10,11 +10,13 @@ import com.nhat.ecommerce_backend.repository.RefreshTokenRepository;
 import com.nhat.ecommerce_backend.service.user.UserService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class RefreshTokenServiceImpl implements RefreshTokenService{
@@ -25,13 +27,16 @@ public class RefreshTokenServiceImpl implements RefreshTokenService{
     private final UserDetailsService userDetailsService;
 
     public String createRefreshToken(UserDetails userDetails) {
+        log.info("Creating refresh token for user: {}", userDetails.getUsername());
         User user = userService.getByEmail(userDetails.getUsername());
 
         if (user == null) {
+            log.error("User not found with email: {}", userDetails.getUsername());
             throw new UsernameNotFoundException("User not found with email: " + userDetails.getUsername());
         }
 
         String refreshToken = jwtUtil.generateRefreshToken(userDetails);
+        log.info("Generate refresh token for user: {}", userDetails.getUsername());
 
         RefreshToken token = RefreshToken.builder()
                 .refreshToken(refreshToken)
@@ -39,20 +44,28 @@ public class RefreshTokenServiceImpl implements RefreshTokenService{
                 .build();
 
         refreshTokenRepository.save(token);
+        log.info("Save refresh token to database for user: {}", userDetails.getUsername());
+
         return token.getRefreshToken();
     }
 
     public RefreshTokenResponse createNewAccessToken(RefreshTokenRequest request) {
+        log.info("Request to create new access token with refresh token: {}", request.getRefreshToken());
+
         String refreshToken = request.getRefreshToken();
 
         if (!jwtUtil.isRefreshTokenValid(refreshToken)) {
+            log.error("Invalid refresh token received: {}", refreshToken);
             throw new BusinessException("Invalid refresh token.");
         }
 
         RefreshToken storedRefreshToken = refreshTokenRepository.findByRefreshToken(refreshToken);
         String email = jwtUtil.extractEmailByRefreshToken(storedRefreshToken.getRefreshToken());
+        log.info("Extracted email: {} from refresh token", email);
+
         UserDetails userDetails = userDetailsService.loadUserByUsername(email);
         String newAccessToken = jwtUtil.generateAccessToken(userDetails);
+        log.info("Generated new access token for user: {}", email);
 
         return RefreshTokenResponse.builder()
                 .accessToken(newAccessToken)
@@ -61,8 +74,15 @@ public class RefreshTokenServiceImpl implements RefreshTokenService{
 
     @Transactional
     public void logout() {
+        log.info("Logging out user: {}", userService.getProfile().getEmail());
+
         User user = userService.getProfile();
         RefreshToken refreshToken = refreshTokenRepository.findByUserId(user.getId());
-        refreshTokenRepository.delete(refreshToken);
+        if (refreshToken != null) {
+            log.info("Deleting refresh token for user: {}", user.getEmail());
+            refreshTokenRepository.delete(refreshToken);
+        } else {
+            log.warn("No refresh token found for user: {}", user.getEmail());
+        }
     }
 }
