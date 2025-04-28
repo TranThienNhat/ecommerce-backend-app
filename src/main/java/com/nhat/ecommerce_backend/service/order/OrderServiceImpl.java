@@ -8,6 +8,7 @@ import com.nhat.ecommerce_backend.exception.BusinessException;
 import com.nhat.ecommerce_backend.model.enums.Status;
 import com.nhat.ecommerce_backend.repository.OrderRepository;
 import com.nhat.ecommerce_backend.service.cartitem.CartItemService;
+import com.nhat.ecommerce_backend.service.mail.MailService;
 import com.nhat.ecommerce_backend.service.orderitem.OrderItemService;
 import com.nhat.ecommerce_backend.service.product.ProductService;
 import com.nhat.ecommerce_backend.service.user.UserService;
@@ -19,7 +20,6 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -31,6 +31,7 @@ public class OrderServiceImpl implements OrderService{
     private final OrderRepository orderRepository;
     private final OrderItemService orderItemService;
     private final ProductService productService;
+    private final MailService mailService;
 
     @Transactional
     public void createOrder(OrdersRequest request) {
@@ -57,6 +58,8 @@ public class OrderServiceImpl implements OrderService{
 
         var savedOrder = orderRepository.save(order);
         log.info("Order created successfully: {}", savedOrder.getId());
+
+        mailService.sendOrderCreatedEmail(user, savedOrder);
 
         orderItemService.createOrderItem(savedOrder,cartItems);
 
@@ -102,6 +105,8 @@ public class OrderServiceImpl implements OrderService{
 
         order.setStatus(request.getStatus());
         orderRepository.save(order);
+
+        mailService.sendOrderStatusUpdatedEmail(order.getUser(), order);
 
         log.info("Order {} updated successfully", orderId);
     }
