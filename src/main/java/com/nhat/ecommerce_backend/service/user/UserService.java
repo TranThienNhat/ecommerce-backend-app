@@ -7,4 +7,5 @@ public interface UserService {
     void registerUser(RegisterRequest request);
     User getProfile();
     User findById(Long userId);
+    User getByEmail(String username);
 }
