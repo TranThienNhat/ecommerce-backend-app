@@ -48,8 +48,8 @@ class AuthenticationServiceImplTest {
         LoginResponse response = authenticationService.login(loginRequest);
 
         assertNotNull(response);
-        assertEquals("mocked-jwt-token", response.getAccessToken());
-        assertEquals("mocked-jwt-access-token", response.getRefreshToken());
+        assertEquals("mocked-jwt-access-token", response.getAccessToken());
+        assertEquals("mocked-jwt-refresh-token", response.getRefreshToken());
 
         verify(authenticationManager).authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getEmail(),loginRequest.getPassword()));
