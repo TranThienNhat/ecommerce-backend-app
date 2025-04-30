@@ -7,12 +7,14 @@ import com.nhat.ecommerce_backend.exception.BusinessException;
 import com.nhat.ecommerce_backend.model.enums.Status;
 import com.nhat.ecommerce_backend.repository.OrderRepository;
 import com.nhat.ecommerce_backend.service.cartitem.CartItemService;
+import com.nhat.ecommerce_backend.service.mail.MailService;
 import com.nhat.ecommerce_backend.service.orderitem.OrderItemService;
 import com.nhat.ecommerce_backend.service.product.ProductService;
 import com.nhat.ecommerce_backend.service.user.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -43,6 +45,9 @@ class OrderServiceImplTest {
 
     @Mock
     private OrderRepository orderRepository;
+
+    @Mock
+    private MailService mailService;
 
     @InjectMocks
     private OrderServiceImpl orderServiceImpl;
@@ -113,6 +118,12 @@ class OrderServiceImplTest {
         Mockito.when(orderRepository.save(Mockito.any(Order.class))).thenReturn(savedOrder);
 
         orderServiceImpl.createOrder(ordersRequest);
+
+        ArgumentCaptor<Order> orderCaptor = ArgumentCaptor.forClass(Order.class);
+        Mockito.verify(mailService).sendOrderCreatedEmail(Mockito.eq(mockUser), orderCaptor.capture());
+
+        Order capturedOrder = orderCaptor.getValue();
+        assertEquals(savedOrder.getId(), capturedOrder.getId());
 
         Mockito.verify(orderRepository, Mockito.times(1)).save(Mockito.any(Order.class));
         Mockito.verify(orderItemService, Mockito.times(1)).createOrderItem(Mockito.any(Order.class), Mockito.anyList());
