@@ -66,6 +66,11 @@ public class GlobalExceptionHandler {
         return buildErrorResponse(ex.getMessage(), HttpStatus.BAD_REQUEST, request);
     }
 
+    @ExceptionHandler(UnauthorizedException.class)
+    public ResponseEntity<Map<String, Object>> handleUnauthorizedException(UnauthorizedException ex, HttpServletRequest request) {
+        return buildErrorResponse(ex.getMessage(), HttpStatus.UNAUTHORIZED, request);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, Object>> handleGlobalException(Exception ex, HttpServletRequest request) {
         logger.error("Unexpected error occurred: ", ex);
