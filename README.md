@@ -760,7 +760,7 @@ Run ecommerce-backend-app using the following command:
 ### 🧪 Testing
 Run the test suite using the following command:
 ```sh
-❯mvn testtest
+❯mvn test
 ```
 
 ---
