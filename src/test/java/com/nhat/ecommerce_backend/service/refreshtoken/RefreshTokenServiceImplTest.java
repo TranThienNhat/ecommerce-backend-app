@@ -6,6 +6,7 @@ import com.nhat.ecommerce_backend.dto.refreshtoken.RefreshTokenResponse;
 import com.nhat.ecommerce_backend.entity.RefreshToken;
 import com.nhat.ecommerce_backend.entity.User;
 import com.nhat.ecommerce_backend.exception.BusinessException;
+import com.nhat.ecommerce_backend.exception.UnauthorizedException;
 import com.nhat.ecommerce_backend.repository.RefreshTokenRepository;
 import com.nhat.ecommerce_backend.service.user.UserService;
 import org.junit.jupiter.api.BeforeEach;
@@ -106,14 +107,15 @@ class RefreshTokenServiceImplTest {
 
     @Test
     void createNewAccessToken_ShouldThrow_Exception() {
+        request.setRefreshToken("mock-refresh-token-new");
         Mockito.when(jwtUtil.isRefreshTokenValid(request.getRefreshToken())).thenReturn(false);
 
-        BusinessException exception = assertThrows(BusinessException.class, () -> {
+        UnauthorizedException exception = assertThrows(UnauthorizedException.class, () -> {
             refreshTokenService.createNewAccessToken(request);
         });
 
         assertNotNull(exception);
-        assertEquals("Invalid refresh token.", exception.getMessage());
+        assertEquals("Refresh token expired or wrong signature", exception.getMessage());
     }
 
     @Test
