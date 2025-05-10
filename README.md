@@ -38,13 +38,16 @@
 
 ## 📍 Overview
 
-<code>❯ REPLACE-ME</code>
+Dự án **E-commerce Backend** là nền tảng mạnh mẽ và linh hoạt được phát triển với **Spring Boot** và **MySQL**, mang đến giải pháp hoàn hảo cho việc xây dựng các ứng dụng thương mại điện tử hiện đại. Được thiết kế để tối ưu hóa hiệu suất và khả năng mở rộng, dự án này cung cấp các dịch vụ backend vững chắc, hỗ trợ việc quản lý người dùng, sản phẩm, giỏ hàng, và đơn hàng.
 
 ---
 
 ## 👾 Features
 
-<code>❯ REPLACE-ME</code>
+❯ **Đăng ký và xác thực người dùng**: Tạo tài khoản người dùng và bảo vệ hệ thống với các cơ chế xác thực bảo mật mạnh mẽ, bao gồm mã xác nhận và JWT.<br/>
+❯ **Quản lý sản phẩm**: Cho phép thêm, sửa, xóa sản phẩm dễ dàng với các tính năng phân loại theo danh mục, giá cả và các đặc tính sản phẩm.<br/>
+❯ **Giỏ hàng thông minh**: Hỗ trợ người dùng dễ dàng quản lý sản phẩm trong giỏ, với tính năng cập nhật, xóa hoặc thay đổi số lượng sản phẩm một cách nhanh chóng.<br/>
+❯ **Quản lý đơn hàng**: Tạo và theo dõi các đơn hàng, từ lúc đặt hàng đến khi giao hàng, giúp người dùng và quản trị viên dễ dàng giám sát và quản lý trạng thái đơn hàng.
 
 ---
 
