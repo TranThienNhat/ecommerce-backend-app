@@ -766,9 +766,20 @@ Run the test suite using the following command:
 ---
 ## 📌 Project Roadmap
 
-- [X] **`Task 1`**: <strike>Implement feature one.</strike>
-- [ ] **`Task 2`**: Implement feature two.
-- [ ] **`Task 3`**: Implement feature three.
+- [X] **Phase 1**: <strike>Completed project skeleton.</strike>
+  - Set up project structure and core components.
+  - Implemented user authentication, product management, cart, and order processing.
+  - Integrated Swagger and Postman for API testing.
+  
+- [X] **Phase 2**: <strike>Refactor, fix bugs, and enhance security.</strike>
+  - Refactor code, fix bugs, and enhance security with JWT and Spring Security.
+  - Optimize performance with query improvements and caching.
+
+- [ ] **Phase 3**: Add new features and adopt modern technologies.
+  - Add features like payment integration, comment & rating systems.
+  - Integrate Redis, Elasticsearch, and Docker.
+  - Implement tests and prepare for production deployment.
+
 
 ---
 
