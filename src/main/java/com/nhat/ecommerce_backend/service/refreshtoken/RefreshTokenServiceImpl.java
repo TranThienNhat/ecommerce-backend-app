@@ -5,7 +5,7 @@ import com.nhat.ecommerce_backend.dto.refreshtoken.RefreshTokenRequest;
 import com.nhat.ecommerce_backend.dto.refreshtoken.RefreshTokenResponse;
 import com.nhat.ecommerce_backend.entity.RefreshToken;
 import com.nhat.ecommerce_backend.entity.User;
-import com.nhat.ecommerce_backend.exception.BusinessException;
+import com.nhat.ecommerce_backend.exception.UnauthorizedException;
 import com.nhat.ecommerce_backend.repository.RefreshTokenRepository;
 import com.nhat.ecommerce_backend.service.user.UserService;
 import jakarta.transaction.Transactional;
@@ -55,12 +55,16 @@ public class RefreshTokenServiceImpl implements RefreshTokenService{
         String refreshToken = request.getRefreshToken();
 
         if (!jwtUtil.isRefreshTokenValid(refreshToken)) {
-            log.error("Invalid refresh token received: {}", refreshToken);
-            throw new BusinessException("Invalid refresh token.");
+            throw new UnauthorizedException("Refresh token expired or wrong signature");
         }
 
-        RefreshToken storedRefreshToken = refreshTokenRepository.findByRefreshToken(refreshToken);
-        String email = jwtUtil.extractEmailByRefreshToken(storedRefreshToken.getRefreshToken());
+        RefreshToken stored = refreshTokenRepository.findByRefreshToken(refreshToken);
+        if (stored == null || !stored.getRefreshToken().equals(refreshToken)) {
+            throw new UnauthorizedException("Refresh token is invalid or has been deleted");
+        }
+
+
+        String email = jwtUtil.extractEmailByRefreshToken(stored.getRefreshToken());
         log.info("Extracted email: {} from refresh token", email);
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(email);
