@@ -3,14 +3,25 @@
 </p>
 <p align="center"><h1 align="center">ECOMMERCE-BACKEND-APP</h1></p>
 <p align="center">
-	<em><code>❯ REPLACE-ME</code></em>
 </p>
 <p align="center">
-	<img src="https://img.shields.io/github/license/TranThienNhat/ecommerce-backend-app?style=default&logo=opensourceinitiative&logoColor=white&color=0080ff" alt="license">
-	<img src="https://img.shields.io/github/last-commit/TranThienNhat/ecommerce-backend-app?style=default&logo=git&logoColor=white&color=0080ff" alt="last-commit">
-	<img src="https://img.shields.io/github/languages/top/TranThienNhat/ecommerce-backend-app?style=default&color=0080ff" alt="repo-top-language">
-	<img src="https://img.shields.io/github/languages/count/TranThienNhat/ecommerce-backend-app?style=default&color=0080ff" alt="repo-language-count">
+	<!-- Tech stack -->
+	<img src="https://img.shields.io/badge/Java-ED8B00?style=flat-square&logo=java&logoColor=white" alt="Java">
+	<img src="https://img.shields.io/badge/Spring%20Boot-6DB33F?style=flat-square&logo=springboot&logoColor=white" alt="Spring Boot">
+	<img src="https://img.shields.io/badge/Spring%20Data%20JPA-59666C?style=flat-square&logo=spring&logoColor=white" alt="Spring Data JPA">
+	<img src="https://img.shields.io/badge/Spring%20Security-00758F?style=flat-square&logo=springsecurity&logoColor=white" alt="Spring Security">
+	<img src="https://img.shields.io/badge/Maven-C71A36?style=flat-square&logo=apachemaven&logoColor=white" alt="Maven">
+	<img src="https://img.shields.io/badge/MySQL-4479A1?style=flat-square&logo=mysql&logoColor=white" alt="MySQL">
+	<img src="https://img.shields.io/badge/Lombok-FF0000?style=flat-square&logo=java&logoColor=white" alt="Lombok">
+	<img src="https://img.shields.io/badge/Postman-FF6C37?style=flat-square&logo=postman&logoColor=white" alt="Postman">
+	<img src="https://img.shields.io/badge/Swagger-85EA2D?style=flat-square&logo=swagger&logoColor=black" alt="Swagger">
+	<img src="https://img.shields.io/github/license/TranThienNhat/ecommerce-backend-app?style=flat-square&logo=opensourceinitiative&logoColor=white&color=0080ff" alt="license">
+	<img src="https://img.shields.io/github/last-commit/TranThienNhat/ecommerce-backend-app?style=flat-square&logo=git&logoColor=white&color=0080ff" alt="last-commit">
+	<img src="https://img.shields.io/github/languages/top/TranThienNhat/ecommerce-backend-app?style=flat-square&color=0080ff" alt="repo-top-language">
+	<img src="https://img.shields.io/github/languages/count/TranThienNhat/ecommerce-backend-app?style=flat-square&color=0080ff" alt="repo-language-count">
 </p>
+
+
 <p align="center"><!-- default option, no dependency badges. -->
 </p>
 <p align="center">
