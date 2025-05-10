@@ -2,6 +2,7 @@ package com.nhat.ecommerce_backend.config;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -20,11 +21,11 @@ public class JwtUtil {
     public String generateAccessToken(UserDetails userDetails) {
         return Jwts.builder()
                 .setSubject(userDetails.getUsername())
-                .claim("role",userDetails.getAuthorities().stream()
-                        .map(grantedAuthority -> grantedAuthority.getAuthority())
+                .claim("role", userDetails.getAuthorities().stream()
+                        .map(GrantedAuthority::getAuthority)
                         .toList())
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 5))
                 .signWith(accessKey, SignatureAlgorithm.HS256)
                 .compact();
     }
@@ -41,7 +42,7 @@ public class JwtUtil {
 
     public String extractEmailByAccessToken(String token) {return parseAccessToken(token).getBody().getSubject();}
 
-    public boolean isTokenValid(String token) {
+    public boolean isAccessTokenValid(String token) {
         try {
             parseAccessToken(token);
             return true;
