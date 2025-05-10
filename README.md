@@ -732,18 +732,22 @@ Install ecommerce-backend-app using one of the following methods:
 ```
 
 3. Install the project dependencies:
-
-echo 'INSERT-INSTALL-COMMAND-HERE'
-
+```sh
+❯ mvn clean install
+```
 
 
 ### 🤖 Usage
 Run ecommerce-backend-app using the following command:
-echo 'INSERT-RUN-COMMAND-HERE'
+```sh
+❯mvn spring-boot:run
+```
 
 ### 🧪 Testing
 Run the test suite using the following command:
-echo 'INSERT-TEST-COMMAND-HERE'
+```sh
+❯mvn testtest
+```
 
 ---
 ## 📌 Project Roadmap
